@@ -41,8 +41,11 @@ public class Catalogue implements I_Catalogue{
         if(Objects.isNull(l)){
             return 0;
         }
-        l.forEach(produit -> addProduit(produit));
-        return produits.size();
+        int nbProduitAjoute = 0;
+        for (I_Produit produit : l) {
+            nbProduitAjoute += addProduit(produit) ? 1 : 0;
+        }
+        return nbProduitAjoute;
     }
 
     @Override

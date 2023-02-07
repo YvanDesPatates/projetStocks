@@ -26,6 +26,9 @@ public class Produit implements I_Produit {
 
     @Override
     public boolean ajouter(int qteAchetee) {
+        if (qteAchetee <= 0){
+            return false;
+        }
         quantiteStock += qteAchetee;
         return true;
     }
