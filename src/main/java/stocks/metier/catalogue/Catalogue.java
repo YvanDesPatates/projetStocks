@@ -3,10 +3,7 @@ package stocks.metier.catalogue;
 import stocks.metier.produit.I_Produit;
 import stocks.metier.produit.Produit;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.DoubleAdder;
 
 public class Catalogue implements I_Catalogue{
@@ -19,6 +16,9 @@ public class Catalogue implements I_Catalogue{
     @Override
     public boolean addProduit(I_Produit produit) {
         try {
+            if (produits.containsKey(produit.getNom()) ) {
+                return false;
+            }
             produits.put(produit.getNom(), produit);
             return true;
         }catch (Exception e){
@@ -40,6 +40,9 @@ public class Catalogue implements I_Catalogue{
 
     @Override
     public int addProduits(List<I_Produit> l) {
+        if(Objects.isNull(l)){
+            return 0;
+        }
         l.forEach(produit -> addProduit(produit));
         return produits.size();
     }

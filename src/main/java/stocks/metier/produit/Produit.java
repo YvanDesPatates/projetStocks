@@ -16,7 +16,7 @@ public class Produit implements I_Produit {
 
         if (prixUnitaireHT <= 0 ){throw new RuntimeException("le prix doit être positif");}
         else {
-            this.nom = nom;
+            this.nom = nom.strip();
             this.prixUnitaireHT = prixUnitaireHT;
             this.quantiteStock = quantiteStock;
         }
