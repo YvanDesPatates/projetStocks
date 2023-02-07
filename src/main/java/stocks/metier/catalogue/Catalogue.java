@@ -100,6 +100,7 @@ public class Catalogue implements I_Catalogue{
 
         /*
 
+
         if (getMontantTotalTTC()<=0){
             return "\n" + "Montant total TTC du stock : 0,00 €";
         }
