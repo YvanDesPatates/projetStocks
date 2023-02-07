@@ -7,10 +7,10 @@ import java.util.*;
 import java.util.concurrent.atomic.DoubleAdder;
 
 public class Catalogue implements I_Catalogue{
-    private final Map<String, I_Produit> produits;
+    private final SortedMap<String, I_Produit> produits;
 
     public Catalogue() {
-        this.produits = new HashMap<>();
+        this.produits = new TreeMap<>();
     }
 
     @Override
@@ -50,6 +50,9 @@ public class Catalogue implements I_Catalogue{
 
     @Override
     public boolean removeProduit(String nom) {
+        if (Objects.isNull(nom)){
+            return false;
+        }
         return produits.remove(nom) != null;
     }
 
@@ -80,7 +83,7 @@ public class Catalogue implements I_Catalogue{
     public double getMontantTotalTTC() {
         DoubleAdder total = new DoubleAdder();
         produits.forEach( (nom, produit) -> total.add(produit.getPrixStockTTC()));
-        return total.sum();
+        return (double) Math.round(total.sum()*100)/100;
     }
 
     @Override

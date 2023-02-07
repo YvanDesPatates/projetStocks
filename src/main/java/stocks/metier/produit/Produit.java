@@ -1,5 +1,6 @@
 package stocks.metier.produit;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Produit implements I_Produit {
@@ -17,7 +18,8 @@ public class Produit implements I_Produit {
             throw new RuntimeException("le prix et le stock doivent être positif");
         }
         else {
-            this.nom = nom.strip();
+            char[] nomFiltre = nom.strip().toCharArray();
+            this.nom = nom.strip().replaceAll("\t", " ");
             this.prixUnitaireHT = prixUnitaireHT;
             this.quantiteStock = quantiteStock;
         }
