@@ -87,4 +87,38 @@ public class Catalogue implements I_Catalogue{
     public void clear() {
         produits.clear();
     }
+
+    @Override
+    public String toString(){
+
+        String resultat = "";
+
+        String resultatAttendu = "Mars - prix HT : 10,00 € - prix TTC : 12,00 € - quantité en stock : 5" + "\n"
+                + "Treets - prix HT : 10,00 € - prix TTC : 12,00 € - quantité en stock : 4" + "\n"
+                + "Raider - prix HT : 1,00 € - prix TTC : 1,20 € - quantité en stock : 10" + "\n" + "\n"
+                + "Montant total TTC du stock : 120,00 €";
+
+        /*
+
+        if (getMontantTotalTTC()<=0){
+            return "\n" + "Montant total TTC du stock : 0,00 €";
+        }
+        else {
+
+
+        for (I_Produit produit : produits) {
+            nbProduitAjoute += addProduit(produit) ? 1 : 0;
+        }
+
+
+        produits.forEach((nom,produit) -> {
+            resultat = resultat + produit.toString();
+        });
+            resultat =  "\n"
+                    + "Montant total TTC du stock : "+ getMontantTotalTTC()+" €";
+
+         */
+        //}
+        return resultat;
+    }
 }
