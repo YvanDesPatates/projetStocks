@@ -1,6 +1,7 @@
 package stocks.metier.catalogue;
 
 import stocks.metier.produit.I_Produit;
+import stocks.metier.produit.Produit;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,15 +28,14 @@ public class Catalogue implements I_Catalogue{
 
     @Override
     public boolean addProduit(String nom, double prix, int qte) {
-//        I_Produit produit = new Produit(nom, prix, qte);
-//        return addProduit(produit);
-        return false;
+        I_Produit produit = new Produit(nom, prix, qte);
+        return addProduit(produit);
     }
 
     @Override
     public int addProduits(List<I_Produit> l) {
         l.forEach(produit -> addProduit(produit));
-        return l.size();
+        return produits.size();
     }
 
     @Override
