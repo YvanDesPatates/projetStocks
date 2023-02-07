@@ -5,12 +5,13 @@ import stocks.metier.produit.Produit;
 
 import java.util.*;
 import java.util.concurrent.atomic.DoubleAdder;
+import java.util.stream.Collectors;
 
 public class Catalogue implements I_Catalogue{
-    private final SortedMap<String, I_Produit> produits;
+    private final Map<String, I_Produit> produits;
 
     public Catalogue() {
-        this.produits = new TreeMap<>();
+        this.produits = new HashMap<>();
     }
 
     @Override
@@ -76,7 +77,7 @@ public class Catalogue implements I_Catalogue{
 
     @Override
     public String[] getNomProduits() {
-        return produits.keySet().toArray(new String[0]);
+        return produits.keySet().stream().sorted().toList().toArray(new String[0]);
     }
 
     @Override
@@ -93,36 +94,14 @@ public class Catalogue implements I_Catalogue{
 
     @Override
     public String toString(){
-
-        String resultat = "";
-
-        String resultatAttendu = "Mars - prix HT : 10,00 € - prix TTC : 12,00 € - quantité en stock : 5" + "\n"
-                + "Treets - prix HT : 10,00 € - prix TTC : 12,00 € - quantité en stock : 4" + "\n"
-                + "Raider - prix HT : 1,00 € - prix TTC : 1,20 € - quantité en stock : 10" + "\n" + "\n"
-                + "Montant total TTC du stock : 120,00 €";
-
-        /*
-
-
-        if (getMontantTotalTTC()<=0){
-            return "\n" + "Montant total TTC du stock : 0,00 €";
+        StringBuilder res = new StringBuilder();
+        for (I_Produit produit : produits.values()) {
+            res.append(produit.toString()).append("\n");
         }
-        else {
-
-
-        for (I_Produit produit : produits) {
-            nbProduitAjoute += addProduit(produit) ? 1 : 0;
-        }
-
-
-        produits.forEach((nom,produit) -> {
-            resultat = resultat + produit.toString();
-        });
-            resultat =  "\n"
-                    + "Montant total TTC du stock : "+ getMontantTotalTTC()+" €";
-
-         */
-        //}
-        return resultat;
+        res.append("\n")
+                .append("Montant total TTC du stock : ")
+                .append(String.format(Locale.FRANCE, "%,.2f", getMontantTotalTTC()))
+                .append(" €");
+        return res.toString();
     }
 }

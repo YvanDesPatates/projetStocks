@@ -1,6 +1,7 @@
 package stocks.metier.produit;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Produit implements I_Produit {
@@ -71,6 +72,12 @@ public class Produit implements I_Produit {
 
     @Override
     public String toString(){
-        return this.nom + " - prix HT : " + getPrixUnitaireHT() + " € - prix TTC : " + getPrixUnitaireTTC() + " € - quantité en stock : " + quantiteStock + "\n";
+        return this.nom +
+                " - prix HT : " +
+                String.format(Locale.FRANCE, "%,.2f" ,getPrixUnitaireHT()) +
+                " € - prix TTC : " +
+                String.format(Locale.FRANCE, "%,.2f", getPrixUnitaireTTC()) +
+                " € - quantité en stock : " +
+                quantiteStock;
     }
 }

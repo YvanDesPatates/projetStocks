@@ -2,6 +2,7 @@ package stocks.metier.catalogue;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -809,7 +810,9 @@ public class CatalogueTest2 {
 
 	@Test
 	public void testClear() {
-		fail("A vous d'écrire le code de ce test");
+		cat.clear();
+		assertTrue(Arrays.asList(cat.getNomProduits()).isEmpty());
+		assertEquals(0.0, cat.getMontantTotalTTC(), 0);
 	}
 
 	private I_Produit createProduit(String nom, double prixHT, int quantite) {
