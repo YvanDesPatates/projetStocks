@@ -13,8 +13,9 @@ public class Produit implements I_Produit {
         if (Objects.isNull(nom) || Objects.isNull(prixUnitaireHT) || Objects.isNull(quantiteStock)){
             throw new NullPointerException("Une des valeurs est null");
         }
-
-        if (prixUnitaireHT <= 0 ){throw new RuntimeException("le prix doit être positif");}
+        if (prixUnitaireHT <= 0 || quantiteStock < 0){
+            throw new RuntimeException("le prix et le stock doivent être positif");
+        }
         else {
             this.nom = nom.strip();
             this.prixUnitaireHT = prixUnitaireHT;
