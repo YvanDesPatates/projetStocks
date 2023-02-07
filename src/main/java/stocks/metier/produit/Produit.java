@@ -8,7 +8,7 @@ public class Produit implements I_Produit{
     private final static double tauxTVA = 0.2;
 
     public Produit(String nom, double prixUnitaireHT, int quantiteStock) {
-        this.nom = nom;
+        this.nom = nom.strip();
         this.prixUnitaireHT = prixUnitaireHT;
         this.quantiteStock = quantiteStock;
     }
