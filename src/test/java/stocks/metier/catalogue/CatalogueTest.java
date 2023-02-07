@@ -10,6 +10,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CatalogueTest {
+
     Catalogue catalogue;
     I_Produit soupiere;
     I_Produit pompom;

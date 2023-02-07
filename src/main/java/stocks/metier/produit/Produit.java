@@ -1,6 +1,8 @@
 package stocks.metier.produit;
 
-public class Produit implements I_Produit{
+import java.util.Objects;
+
+public class Produit implements I_Produit {
 
     private int quantiteStock;
     private final String nom;
@@ -8,9 +10,17 @@ public class Produit implements I_Produit{
     private final static double tauxTVA = 0.2;
 
     public Produit(String nom, double prixUnitaireHT, int quantiteStock) {
-        this.nom = nom;
-        this.prixUnitaireHT = prixUnitaireHT;
-        this.quantiteStock = quantiteStock;
+        if (Objects.isNull(nom) || Objects.isNull(prixUnitaireHT) || Objects.isNull(quantiteStock)){
+            throw new NullPointerException("Une des valeurs est null");
+        }
+
+        if (prixUnitaireHT <= 0 ){throw new RuntimeException("le prix doit être positif");}
+        else {
+            this.nom = nom;
+            this.prixUnitaireHT = prixUnitaireHT;
+            this.quantiteStock = quantiteStock;
+        }
+
     }
 
     @Override
@@ -21,7 +31,7 @@ public class Produit implements I_Produit{
 
     @Override
     public boolean enlever(int qteVendue) {
-        if (quantiteStock >= qteVendue ){
+        if (quantiteStock >= qteVendue) {
             quantiteStock -= qteVendue;
             return true;
         }
@@ -45,7 +55,7 @@ public class Produit implements I_Produit{
 
     @Override
     public double getPrixUnitaireTTC() {
-        return prixUnitaireHT*(1+tauxTVA);
+        return prixUnitaireHT * (1 + tauxTVA);
     }
 
     @Override

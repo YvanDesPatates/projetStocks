@@ -28,8 +28,14 @@ public class Catalogue implements I_Catalogue{
 
     @Override
     public boolean addProduit(String nom, double prix, int qte) {
-        I_Produit produit = new Produit(nom, prix, qte);
-        return addProduit(produit);
+
+        if (prix>0){
+
+            I_Produit produit = new Produit(nom, prix, qte);
+            return addProduit(produit);
+        }
+        else return false;
+
     }
 
     @Override
