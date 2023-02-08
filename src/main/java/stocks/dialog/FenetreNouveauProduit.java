@@ -1,5 +1,7 @@
 package stocks.dialog;
 
+import stocks.controleur.ControllerCreationSupression;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -12,17 +14,20 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 //	private JComboBox<String> combo;
 	private JButton btValider;
 
+	private ControllerCreationSupression controller;
+
 //	public FenetreNouveauProduit(String[] lesCategories) {
-	public FenetreNouveauProduit() {	
+	public FenetreNouveauProduit(ControllerCreationSupression controller) {
+		this.controller = controller;
 
 		setTitle("Creation Produit");
-		setBounds(500, 500, 200, 250);
+		setBounds(500, 250, 200, 250);
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new FlowLayout());
 
 		JLabel labNom = new JLabel("Nom produit");
 		JLabel labPrixHT = new JLabel("Prix Hors Taxe");
-		JLabel labQte = new JLabel("Quantit� en stock");
+		JLabel labQte = new JLabel("Quantité en stock");
 //		JLabel labCategorie = new JLabel("Categorie");
 		contentPane.add(labNom);
 		txtNom = new JTextField(15);
@@ -48,7 +53,19 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		this.dispose();
+		if (e.getSource() == btValider){
+			try{
+				double prix = Double.parseDouble(txtPrixHT.getText());
+				int qte = Integer.parseInt(txtQte.getText());
+				if (controller.creationProduit(txtNom.getText(), prix, qte)) {
+					new FenetrePopUp("création validée", "le produit " + txtNom.getText() + " à bien été ajouté au catalogue");
+				} else {
+					new FenetrePopUp("erreur", " erreur lors de la création du produit\n vérifiez qu'un autre produit ne porte pas déjà le même nom");
+				}
+			} catch (Exception ex){
+				new FenetrePopUp("erreur", "le prix doit être entré sous la forme '12.00' \n et la quantité sous la forme '12'");
+			}
+		}
 	}
 
 }
