@@ -1,5 +1,9 @@
 package stocks.dialog;
 
+import stocks.controleur.ControllerAchatVente;
+import stocks.controleur.ControllerCreationSupression;
+import stocks.controleur.ControllerEtatStock;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -18,11 +22,15 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 	private JButton btVente;
 	private JButton btQuitter;
 
-	
+	private ControllerEtatStock controllerEtatStock;
+	private ControllerAchatVente controllerAchatVente;
+	private ControllerCreationSupression controllerCreationSupression;
+
+
 	public FenetrePrincipale() {
 		
 		setTitle("exercice Produits");
-		setBounds(500, 500, 320, 250);
+		setBounds(500, 250, 320, 250);
 		JPanel panAffichage = new JPanel();
 		JPanel panNouveauSupprimerProduit = new JPanel();
 //		JPanel panNouveauSupprimerCategorie = new JPanel();
@@ -30,7 +38,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 		JPanel panQuitter = new JPanel();
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new FlowLayout());
-		btAfficher = new JButton("Quantit�s en stock");
+		btAfficher = new JButton("Quantités en stock");
 		btNouveauProduit = new JButton("Nouveau Produit");
 		btSupprimerProduit = new JButton("Supprimer Produit");
 //		btNouvelleCategorie = new JButton("Nouvelle Categorie");
@@ -64,6 +72,10 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 		
 		addWindowListener(this);
 		setVisible(true);
+
+		controllerEtatStock = new ControllerEtatStock();
+		controllerAchatVente = new ControllerAchatVente();
+		controllerCreationSupression = new ControllerCreationSupression();
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -75,10 +87,10 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 //		String[] tabCategories = new String[] {"Bio", "Luxe" };
 		
 		if (e.getSource() == btAfficher)
-			new FenetreAffichage("ajourd'hui nous allons faire de la programmation en 5 couches");
+			new FenetreAffichage(controllerEtatStock.getEtatStock());
 		if (e.getSource() == btNouveauProduit)
 //			new FenetreNouveauProduit(tabCategories);
-			new FenetreNouveauProduit();
+			new FenetreNouveauProduit(controllerCreationSupression);
 		if (e.getSource() == btSupprimerProduit)
 			new FenetreSuppressionProduit(tabProduits);
 //		if (e.getSource() == btNouvelleCategorie)
