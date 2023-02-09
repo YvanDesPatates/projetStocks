@@ -1,5 +1,7 @@
 package stocks.dialog;
 
+import stocks.exception.VisualisableException;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -24,5 +26,9 @@ public class FenetrePopUp extends JFrame {
         contentPane.add(panBas, "South");
 
         this.setVisible(true);
+    }
+
+    public FenetrePopUp(VisualisableException ex){
+        this(ex.getTitle(), ex.getMessage());
     }
 }

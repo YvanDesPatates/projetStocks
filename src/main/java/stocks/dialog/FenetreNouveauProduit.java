@@ -1,6 +1,7 @@
 package stocks.dialog;
 
 import stocks.controleur.ControllerCreationSupression;
+import stocks.exception.VisualisableException;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -55,15 +56,13 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btValider){
 			try{
-				double prix = Double.parseDouble(txtPrixHT.getText());
-				int qte = Integer.parseInt(txtQte.getText());
-				if (controller.creationProduit(txtNom.getText(), prix, qte)) {
+				if (controller.creationProduit(txtNom.getText(), txtPrixHT.getText(), txtQte.getText())) {
 					new FenetrePopUp("création validée", "le produit " + txtNom.getText() + " à bien été ajouté au catalogue");
 				} else {
-					new FenetrePopUp("erreur", " erreur lors de la création du produit\n vérifiez qu'un autre produit ne porte pas déjà le même nom");
+					new FenetrePopUp("Erreur création produit", " Erreur lors de la création du produit\n vérifiez qu'aucun produit ne porte pas déjà le même nom !");
 				}
-			} catch (Exception ex){
-				new FenetrePopUp("erreur", "le prix doit être entré sous la forme '12.00' \n et la quantité sous la forme '12'");
+			} catch (VisualisableException ex){
+				new FenetrePopUp(ex);
 			}
 		}
 	}
