@@ -9,4 +9,8 @@ public class ControllerCreationSupression extends ControllerBase{
     public boolean supressionProduit(String nomProduit){
         return getCatalogue().removeProduit(nomProduit);
     }
+
+    public String[] getNomProduits() {
+        return  getCatalogue().getNomProduits();
+    }
 }

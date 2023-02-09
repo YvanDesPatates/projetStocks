@@ -1,5 +1,7 @@
 package stocks.dialog;
 
+import stocks.controleur.ControllerAchatVente;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -10,7 +12,13 @@ public class FenetreAchat extends JFrame implements ActionListener {
 	private JTextField txtQuantite;
 	private JComboBox<String> combo;
 
-	public FenetreAchat(String[] lesProduits) {
+	private ControllerAchatVente controller;
+
+	public FenetreAchat(ControllerAchatVente controller) {
+
+		this.controller = controller;
+
+		String [] lesProduits = controller.getNomProduits();
 
 		setTitle("Achat");
 		setBounds(500, 250, 200, 125);

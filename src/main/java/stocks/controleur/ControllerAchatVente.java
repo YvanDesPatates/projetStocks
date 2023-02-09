@@ -9,4 +9,8 @@ public class ControllerAchatVente extends ControllerBase{
     public boolean vendreStock(String nomProduit, int qte){
         return getCatalogue().vendreStock(nomProduit, qte);
     }
+
+    public String[] getNomProduits() {
+        return getCatalogue().getNomProduits();
+    }
 }
