@@ -40,8 +40,6 @@ public class FenetreSuppressionProduit extends JFrame implements ActionListener 
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(combo.getSelectedItem());
-
 		String nom = (String) combo.getSelectedItem();
 
 		if (e.getSource() == btSupprimer){

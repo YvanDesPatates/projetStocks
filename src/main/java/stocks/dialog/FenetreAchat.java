@@ -1,9 +1,11 @@
 package stocks.dialog;
 
 import stocks.controleur.ControllerAchatVente;
+import stocks.exception.VisualisableException;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Objects;
 import javax.swing.*;
 
 public class FenetreAchat extends JFrame implements ActionListener {
@@ -42,7 +44,19 @@ public class FenetreAchat extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		this.dispose();
+
+		if (e.getSource() == btAchat){
+			String nom = (String) combo.getSelectedItem();
+			try {
+				if (controller.achatProduit(nom, txtQuantite.getText())) {
+					new FenetrePopUp("Achat réussi", " L'achat de "+txtQuantite.getText()+" "+nom+" à bien été effectué");
+				} else {
+					new FenetrePopUp(" Erreur", " Une erreur est survenue lors de l'achat");
+				}
+			} catch (VisualisableException ex){
+				new FenetrePopUp(ex);
+			}
+		}
 	}
 
 }

@@ -1,6 +1,7 @@
 package stocks.dialog;
 
 import stocks.controleur.ControllerAchatVente;
+import stocks.exception.VisualisableException;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -43,7 +44,19 @@ public class FenetreVente extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		this.dispose();
+
+		if (e.getSource() == btVente){
+			String nom = (String) combo.getSelectedItem();
+			try {
+				if (controller.vendreStock(nom, txtQuantite.getText())) {
+					new FenetrePopUp(" Vente réussi", " La vente de "+txtQuantite.getText()+" "+nom+" à bien été effectué");
+				} else {
+					new FenetrePopUp(" Erreur", " Une erreur est survenue lors de la vente\n\n Vérifiez vos stocks !\n Vous ne pouvez vendre plus de produits que vous en avez");
+				}
+			} catch (VisualisableException ex){
+				new FenetrePopUp(ex);
+			}
+		}
 	}
 
 }
