@@ -6,11 +6,15 @@ import java.util.Objects;
 
 public abstract class ControllerBase {
 
-    public static Catalogue catalogue = null;
+    private static Catalogue catalogue = null;
 
-    public static Catalogue getCatalogue(){
+    public static Catalogue getCatalogue() {
         if (Objects.isNull(catalogue)){
-            catalogue = new Catalogue();
+            try {
+                catalogue = new Catalogue();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
         return catalogue;
     }

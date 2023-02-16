@@ -1,6 +1,9 @@
 package stocks.metier.produit;
 
-import java.util.Arrays;
+import stocks.DAO.ProduitDAO;
+
+import java.sql.SQLException;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -9,10 +12,11 @@ public class Produit implements I_Produit {
     private int quantiteStock;
     private final String nom;
     private final double prixUnitaireHT;
-    private final static double tauxTVA = 0.2;
+    private static final double TAUX_TVA = 0.2;
+    private static ProduitDAO produitDAO = null;
 
-    public Produit(String nom, double prixUnitaireHT, int quantiteStock) {
-        if (Objects.isNull(nom) || Objects.isNull(prixUnitaireHT) || Objects.isNull(quantiteStock)){
+    public Produit(String nom, double prixUnitaireHT, int quantiteStock){
+        if (Objects.isNull(nom)){
             throw new NullPointerException("Une des valeurs est null");
         }
         if (prixUnitaireHT <= 0 || quantiteStock < 0){
@@ -23,6 +27,14 @@ public class Produit implements I_Produit {
             this.nom = nom.strip().replaceAll("\t", " ");
             this.prixUnitaireHT = prixUnitaireHT;
             this.quantiteStock = quantiteStock;
+        }
+
+        if ( produitDAO == null){
+            try {
+                produitDAO = new ProduitDAO();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }
@@ -62,12 +74,27 @@ public class Produit implements I_Produit {
 
     @Override
     public double getPrixUnitaireTTC() {
-        return prixUnitaireHT * (1 + tauxTVA);
+        return prixUnitaireHT * (1 + TAUX_TVA);
     }
 
     @Override
     public double getPrixStockTTC() {
         return quantiteStock * getPrixUnitaireTTC();
+    }
+
+    public static List<Produit> getAll() throws SQLException, ClassNotFoundException {
+        if ( produitDAO == null){
+            produitDAO = new ProduitDAO();
+        }
+        return produitDAO.getAll();
+    }
+
+    public boolean save() throws SQLException {
+        return produitDAO.save(this);
+    }
+
+    public boolean delete() throws SQLException {
+        return produitDAO.delete(this);
     }
 
     @Override

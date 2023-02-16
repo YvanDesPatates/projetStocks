@@ -1,6 +1,7 @@
 package stocks.metier.catalogue;
 import static org.junit.Assert.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +17,7 @@ public class CatalogueTest2 {
 	I_Catalogue cat;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws SQLException, ClassNotFoundException {
 		cat = new Catalogue();
 //		Si votre Catalogue est un Singleton, il faut changer la ligne précédente puis vider le Catalogue avec la méthode clear() comme indiqué à la ligne suivante
 //		cat.clear();

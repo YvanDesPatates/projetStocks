@@ -3,15 +3,19 @@ package stocks.metier.catalogue;
 import stocks.metier.produit.I_Produit;
 import stocks.metier.produit.Produit;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.atomic.DoubleAdder;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Catalogue implements I_Catalogue{
     private final Map<String, I_Produit> produits;
 
-    public Catalogue() {
-        this.produits = new HashMap<>();
+    public Catalogue() throws SQLException, ClassNotFoundException {
+        List<Produit> produits = Produit.getAll();
+        //map (key, value) -> key: produit.getNom(), value: produit
+        this.produits = new HashMap<>( produits.stream().collect(Collectors.toMap((Produit::getNom), Function.identity())) );
     }
 
     @Override

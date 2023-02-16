@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import stocks.metier.produit.I_Produit;
 import stocks.metier.produit.Produit;
 
+import java.sql.SQLException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,7 +18,7 @@ class CatalogueTest {
     I_Produit percolateur;
 
     @BeforeEach
-    public void baseCatalogue(){
+    public void baseCatalogue() throws SQLException, ClassNotFoundException {
         soupiere = new Produit("soupière", 5, 4);
         pompom = new Produit("pompom", 3.5, 10);
         percolateur = new Produit("percolateur", 10, 30);
