@@ -1,6 +1,7 @@
 package stocks.metier.produit;
 
-import stocks.DAO.ProduitDAO;
+import stocks.DAO.ProduitDAOFactory;
+import stocks.DAO.ProduitDAOInterface;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -13,7 +14,7 @@ public class Produit implements I_Produit {
     private final String nom;
     private final double prixUnitaireHT;
     private static final double TAUX_TVA = 0.2;
-    private static ProduitDAO produitDAO = null;
+    private static ProduitDAOInterface produitDAO = null;
 
     public Produit(String nom, double prixUnitaireHT, int quantiteStock){
         if (Objects.isNull(nom)){
@@ -31,7 +32,7 @@ public class Produit implements I_Produit {
 
         if ( produitDAO == null){
             try {
-                produitDAO = new ProduitDAO();
+                produitDAO = new ProduitDAOFactory().createProduitDAO();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -83,18 +84,24 @@ public class Produit implements I_Produit {
     }
 
     public static List<Produit> getAll() throws SQLException, ClassNotFoundException {
-        if ( produitDAO == null){
-            produitDAO = new ProduitDAO();
-        }
+        produitDAO = new ProduitDAOFactory().createProduitDAO();
         return produitDAO.getAll();
     }
 
-    public boolean save() throws SQLException {
-        return produitDAO.save(this);
+    public boolean save() {
+        try {
+            return produitDAO.create(this);
+        } catch (SQLException e){
+            return false;
+        }
     }
 
-    public boolean delete() throws SQLException {
-        return produitDAO.delete(this);
+    public boolean delete() {
+        try {
+            return produitDAO.delete(this);
+        } catch (SQLException e){
+            return false;
+        }
     }
 
     @Override

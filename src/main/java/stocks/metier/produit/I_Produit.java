@@ -1,5 +1,7 @@
 package stocks.metier.produit;
 
+import java.sql.SQLException;
+
 public interface I_Produit {
 
     public abstract boolean ajouter(int qteAchetee);
@@ -9,6 +11,10 @@ public interface I_Produit {
     public abstract double getPrixUnitaireHT();
     public abstract double getPrixUnitaireTTC();
     public abstract double getPrixStockTTC();
+
+    public abstract boolean save();
+    public abstract boolean delete();
+
     public abstract String toString();
 
 }

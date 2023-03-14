@@ -6,18 +6,18 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProduitDAO {
+public class ProduitDAOSQL implements ProduitDAOInterface{
     private final ResultSet resultSet;
     private final Connection connection;
 
     private static final String TABLE = "Produits";
-    private static final String NOM_FIELD = "nom";
-    private static final String PRIX_FIELD = "prix";
-    private static final String QUANTITE_FIELD = "quantite";
+    private static final String NOM_FIELD = "nomProduit";
+    private static final String PRIX_FIELD = "prixProduitHT";
+    private static final String QUANTITE_FIELD = "quantiteStockProduit";
 
-    public ProduitDAO() throws SQLException, ClassNotFoundException {
+    protected ProduitDAOSQL() throws SQLException, ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        this.connection = DriverManager.getConnection("jdbc:oracle:thin:@162.38.222.149:1521:iut", "rouxy", "24051999");
+        this.connection = DriverManager.getConnection("jdbc:oracle:thin:@162.38.222.149:1521:iut", "burillec", "09012000");
         Statement statement = null;
         try {
             this.connection.setAutoCommit(false);
@@ -45,7 +45,7 @@ public class ProduitDAO {
         return new Produit(nom, prix, quantite);
     }
 
-    public boolean save(Produit produit) throws SQLException {
+    public boolean create(Produit produit) throws SQLException {
         try {
             resultSet.moveToInsertRow();
             resultSet.updateString(NOM_FIELD, produit.getNom());

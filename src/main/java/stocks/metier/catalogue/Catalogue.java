@@ -21,7 +21,7 @@ public class Catalogue implements I_Catalogue{
     @Override
     public boolean addProduit(I_Produit produit) {
         try {
-            if (produits.containsKey(produit.getNom()) ) {
+            if (produits.containsKey(produit.getNom()) && !produit.save()) {
                 return false;
             }
             produits.put(produit.getNom(), produit);
@@ -55,7 +55,7 @@ public class Catalogue implements I_Catalogue{
 
     @Override
     public boolean removeProduit(String nom) {
-        if (Objects.isNull(nom)){
+        if (Objects.isNull(nom) || ! produits.get(nom).delete()){
             return false;
         }
         return produits.remove(nom) != null;
