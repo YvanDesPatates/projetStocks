@@ -10,6 +10,6 @@ public class ProduitDAOFactory {
         if (produitDAO == null){
             produitDAO = new ProduitDAOSQL();
         }
-        return new ProduitDAOSQL();
+        return produitDAO;
     }
 }

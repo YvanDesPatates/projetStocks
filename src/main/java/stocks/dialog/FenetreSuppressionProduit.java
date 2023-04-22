@@ -2,32 +2,30 @@ package stocks.dialog;
 
 import stocks.controleur.ControllerCreationSupression;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
-
-import static stocks.controleur.ControllerBase.getCatalogue;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 public class FenetreSuppressionProduit extends JFrame implements ActionListener {
 
-	private JButton btSupprimer;
-	private JComboBox<String> combo;
+	private final JButton btSupprimer;
+	private final JComboBox<String> combo;
 
-	private ControllerCreationSupression controller;
+	private final ControllerCreationSupression controller;
 
 
 	public FenetreSuppressionProduit( ControllerCreationSupression controller) {
 		this.controller = controller;
 
-		String [] lesProduits = controller.getNomProduits();
-		
 		setTitle("Suppression produit");
 		setBounds(500, 500, 200, 105);
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new FlowLayout());
 		btSupprimer = new JButton("Supprimer");
 
-		combo = new JComboBox<String>(lesProduits);
+		combo = new JComboBox<>();
 		combo.setPreferredSize(new Dimension(100, 20));
 		contentPane.add(new JLabel("Produit"));
 		contentPane.add(combo);
@@ -35,8 +33,15 @@ public class FenetreSuppressionProduit extends JFrame implements ActionListener 
 
 		btSupprimer.addActionListener(this);
 
+		refreshList();
 
 		this.setVisible(true);
+	}
+
+	private void refreshList() {
+		String[] lesProduits = controller.getNomProduits();
+		combo.removeAll();
+		Arrays.asList(lesProduits).forEach(combo::addItem);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -55,7 +60,7 @@ public class FenetreSuppressionProduit extends JFrame implements ActionListener 
 			} catch (Exception ex){
 				new FenetrePopUp("erreur", "une erreur est survenur impossible de supprimer l'article");
 			}
-
+			refreshList();
 		}
 	}
 

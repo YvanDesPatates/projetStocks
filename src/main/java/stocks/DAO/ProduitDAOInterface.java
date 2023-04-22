@@ -6,7 +6,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface ProduitDAOInterface {
-    public List<Produit> getAll() throws SQLException, ClassNotFoundException;
-    public boolean create(Produit produit) throws SQLException;
-    public boolean delete(Produit produit) throws SQLException;
+    List<Produit> getAll() throws SQLException, ClassNotFoundException;
+    boolean create(Produit produit);
+    boolean delete(Produit produit);
+    boolean update(Produit produit);
 }

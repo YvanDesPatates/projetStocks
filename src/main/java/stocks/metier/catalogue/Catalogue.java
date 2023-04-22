@@ -21,7 +21,7 @@ public class Catalogue implements I_Catalogue{
     @Override
     public boolean addProduit(I_Produit produit) {
         try {
-            if (produits.containsKey(produit.getNom()) && !produit.save()) {
+            if (produits.containsKey(produit.getNom()) || !produit.save()) {
                 return false;
             }
             produits.put(produit.getNom(), produit);

@@ -9,27 +9,37 @@ import java.util.List;
 public class ProduitDAOSQL implements ProduitDAOInterface{
     private final ResultSet resultSet;
     private final Connection connection;
+    private final PreparedStatement createStatement;
+    private final PreparedStatement deleteStatement;
+    private final PreparedStatement updateStatement;
 
     private static final String TABLE = "Produits";
     private static final String NOM_FIELD = "nomProduit";
     private static final String PRIX_FIELD = "prixProduitHT";
     private static final String QUANTITE_FIELD = "quantiteStockProduit";
+    private static final String procedureCreation = "createProduit";
 
     protected ProduitDAOSQL() throws SQLException, ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
         this.connection = DriverManager.getConnection("jdbc:oracle:thin:@162.38.222.149:1521:iut", "burillec", "09012000");
-        Statement statement = null;
+        Statement statement;
         try {
             this.connection.setAutoCommit(false);
             statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            this.resultSet = statement.executeQuery("SELECT * FROM " + TABLE + " ORDER BY "+ NOM_FIELD);
+            this.resultSet = statement.executeQuery("SELECT produit.* FROM " + TABLE + " produit ORDER BY "+ NOM_FIELD);
+            createStatement = connection.prepareStatement(
+                    "CALL "+procedureCreation+"(?, ?, ?)");
+            deleteStatement = connection.prepareStatement(
+                    "DELETE "+TABLE+" WHERE "+NOM_FIELD+" = ?");
+            updateStatement = connection.prepareStatement(
+                    "UPDATE "+TABLE+" SET "+QUANTITE_FIELD+" = ? WHERE "+NOM_FIELD+" = ?");
         } catch (SQLException e) {
             connection.close();
             throw e;
         }
     }
 
-    public List<Produit> getAll() throws SQLException, ClassNotFoundException {
+    public List<Produit> getAll() throws SQLException {
         List<Produit> result = new ArrayList<>();
         resultSet.beforeFirst();
         while (resultSet.next()){
@@ -38,48 +48,50 @@ public class ProduitDAOSQL implements ProduitDAOInterface{
         return result;
     }
 
-    private Produit getProduitFromResultSet() throws SQLException, ClassNotFoundException {
+    private Produit getProduitFromResultSet() throws SQLException {
         String nom = resultSet.getString(NOM_FIELD);
         double prix = resultSet.getDouble(PRIX_FIELD);
         int quantite = resultSet.getInt(QUANTITE_FIELD);
         return new Produit(nom, prix, quantite);
     }
 
-    public boolean create(Produit produit) throws SQLException {
+    public boolean create(Produit produit) {
         try {
-            resultSet.moveToInsertRow();
-            resultSet.updateString(NOM_FIELD, produit.getNom());
-            resultSet.updateDouble(PRIX_FIELD, produit.getPrixUnitaireHT());
-            resultSet.updateInt(QUANTITE_FIELD, produit.getQuantite());
-            resultSet.insertRow();
+            createStatement.setString(1, produit.getNom());
+            createStatement.setDouble(2, produit.getPrixUnitaireHT());
+            createStatement.setInt(3, produit.getQuantite());
+            createStatement.execute();
             connection.commit();
-            return resultSet.rowInserted();
+            return true;
         } catch (SQLException e){
-            resultSet.cancelRowUpdates();
+            e.printStackTrace();
             return false;
         }
     }
 
-    public boolean delete(Produit produit) throws SQLException {
-        if (goToRowProduct(produit)){
-            try {
-                resultSet.deleteRow();
-                connection.commit();
-                return resultSet.rowDeleted();
-            }catch (SQLException e){
-                return false;
-            }
+    public boolean delete(Produit produit) {
+        try {
+            deleteStatement.setString(1, produit.getNom());
+            deleteStatement.execute();
+            connection.commit();
+            return true;
+        }catch (SQLException e){
+            e.printStackTrace();
         }
         return false;
     }
 
-    private boolean goToRowProduct(Produit produit) throws SQLException {
-        resultSet.beforeFirst();
-        while (resultSet.next()){
-            if ( resultSet.getString(NOM_FIELD).equals(produit.getNom()) ){
-                return true;
-            }
+    public boolean update(Produit produit){
+        try {
+            updateStatement.setDouble(1, produit.getQuantite());
+            updateStatement.setString(2, produit.getNom());
+            updateStatement.execute();
+            connection.commit();
+            return true;
+        } catch (SQLException e){
+            e.printStackTrace();
         }
         return false;
     }
+
 }

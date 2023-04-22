@@ -24,7 +24,6 @@ public class Produit implements I_Produit {
             throw new RuntimeException("le prix et le stock doivent être positif");
         }
         else {
-            char[] nomFiltre = nom.strip().toCharArray();
             this.nom = nom.strip().replaceAll("\t", " ");
             this.prixUnitaireHT = prixUnitaireHT;
             this.quantiteStock = quantiteStock;
@@ -46,6 +45,10 @@ public class Produit implements I_Produit {
             return false;
         }
         quantiteStock += qteAchetee;
+        if (!produitDAO.update(this)){
+            quantiteStock -= qteAchetee;
+            return false;
+        }
         return true;
     }
 
@@ -53,6 +56,10 @@ public class Produit implements I_Produit {
     public boolean enlever(int qteVendue) {
         if (quantiteStock >= qteVendue && qteVendue > 0) {
             quantiteStock -= qteVendue;
+            if (! produitDAO.update(this)){
+                quantiteStock += qteVendue;
+                return false;
+            }
             return true;
         }
         return false;
@@ -89,19 +96,11 @@ public class Produit implements I_Produit {
     }
 
     public boolean save() {
-        try {
             return produitDAO.create(this);
-        } catch (SQLException e){
-            return false;
-        }
     }
 
     public boolean delete() {
-        try {
             return produitDAO.delete(this);
-        } catch (SQLException e){
-            return false;
-        }
     }
 
     @Override
