@@ -8,7 +8,7 @@ public class ProduitDAOFactory {
 
     public ProduitDAOInterface createProduitDAO() throws SQLException, ClassNotFoundException {
         if (produitDAO == null){
-            produitDAO = new ProduitDAOSQL();
+            produitDAO = new ProduitDAOXMLAdaptateur();
         }
         return produitDAO;
     }

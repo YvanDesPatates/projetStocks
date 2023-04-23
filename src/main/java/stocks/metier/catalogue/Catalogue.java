@@ -13,9 +13,9 @@ public class Catalogue implements I_Catalogue{
     private final Map<String, I_Produit> produits;
 
     public Catalogue() throws SQLException, ClassNotFoundException {
-        List<Produit> produits = Produit.getAll();
+        List<I_Produit> produits = Produit.getAll();
         //map (key, value) -> key: produit.getNom(), value: produit
-        this.produits = new HashMap<>( produits.stream().collect(Collectors.toMap((Produit::getNom), Function.identity())) );
+        this.produits = new HashMap<>( produits.stream().collect(Collectors.toMap((I_Produit::getNom), Function.identity())) );
     }
 
     @Override

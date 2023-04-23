@@ -1,5 +1,6 @@
 package stocks.DAO;
 
+import stocks.metier.produit.I_Produit;
 import stocks.metier.produit.Produit;
 
 import java.sql.*;
@@ -39,8 +40,8 @@ public class ProduitDAOSQL implements ProduitDAOInterface{
         }
     }
 
-    public List<Produit> getAll() throws SQLException {
-        List<Produit> result = new ArrayList<>();
+    public List<I_Produit> getAll() throws SQLException {
+        List<I_Produit> result = new ArrayList<>();
         resultSet.beforeFirst();
         while (resultSet.next()){
             result.add(getProduitFromResultSet());
@@ -55,7 +56,7 @@ public class ProduitDAOSQL implements ProduitDAOInterface{
         return new Produit(nom, prix, quantite);
     }
 
-    public boolean create(Produit produit) {
+    public boolean create(I_Produit produit) {
         try {
             createStatement.setString(1, produit.getNom());
             createStatement.setDouble(2, produit.getPrixUnitaireHT());
@@ -69,7 +70,7 @@ public class ProduitDAOSQL implements ProduitDAOInterface{
         }
     }
 
-    public boolean delete(Produit produit) {
+    public boolean delete(I_Produit produit) {
         try {
             deleteStatement.setString(1, produit.getNom());
             deleteStatement.execute();
@@ -81,7 +82,7 @@ public class ProduitDAOSQL implements ProduitDAOInterface{
         return false;
     }
 
-    public boolean update(Produit produit){
+    public boolean update(I_Produit produit){
         try {
             updateStatement.setDouble(1, produit.getQuantite());
             updateStatement.setString(2, produit.getNom());

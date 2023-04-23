@@ -90,7 +90,7 @@ public class Produit implements I_Produit {
         return quantiteStock * getPrixUnitaireTTC();
     }
 
-    public static List<Produit> getAll() throws SQLException, ClassNotFoundException {
+    public static List<I_Produit> getAll() throws SQLException, ClassNotFoundException {
         produitDAO = new ProduitDAOFactory().createProduitDAO();
         return produitDAO.getAll();
     }
