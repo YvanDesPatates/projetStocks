@@ -2,14 +2,13 @@ package stocks.DAO;
 
 import stocks.metier.produit.I_Produit;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class ProduitDAOXMLAdaptateur implements ProduitDAOInterface{
     ProduitDAO_XML dao = new ProduitDAO_XML();
 
     @Override
-    public List<I_Produit> getAll() throws SQLException, ClassNotFoundException {
+    public List<I_Produit> getAll(){
         return dao.lireTous();
     }
 

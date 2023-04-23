@@ -1,14 +1,12 @@
 package stocks.DAO;
 
-import java.sql.SQLException;
-
 public class ProduitDAOFactory {
 
     private static ProduitDAOInterface produitDAO;
 
-    public ProduitDAOInterface createProduitDAO() throws SQLException, ClassNotFoundException {
+    public ProduitDAOInterface createProduitDAO(){
         if (produitDAO == null){
-            produitDAO = new ProduitDAOXMLAdaptateur();
+            produitDAO = new ProduitDAOSQL();
         }
         return produitDAO;
     }

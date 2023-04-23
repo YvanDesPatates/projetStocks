@@ -6,13 +6,14 @@ import stocks.metier.produit.Produit;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ProduitDAOSQL implements ProduitDAOInterface{
-    private final ResultSet resultSet;
-    private final Connection connection;
-    private final PreparedStatement createStatement;
-    private final PreparedStatement deleteStatement;
-    private final PreparedStatement updateStatement;
+    private ResultSet resultSet;
+    private Connection connection;
+    private PreparedStatement createStatement;
+    private PreparedStatement deleteStatement;
+    private PreparedStatement updateStatement;
 
     private static final String TABLE = "Produits";
     private static final String NOM_FIELD = "nomProduit";
@@ -20,11 +21,11 @@ public class ProduitDAOSQL implements ProduitDAOInterface{
     private static final String QUANTITE_FIELD = "quantiteStockProduit";
     private static final String procedureCreation = "createProduit";
 
-    protected ProduitDAOSQL() throws SQLException, ClassNotFoundException {
-        Class.forName("oracle.jdbc.driver.OracleDriver");
-        this.connection = DriverManager.getConnection("jdbc:oracle:thin:@162.38.222.149:1521:iut", "burillec", "09012000");
-        Statement statement;
+    protected ProduitDAOSQL() {
         try {
+            Class.forName("oracle.jdbc.driver.OracleDriver");
+            this.connection = DriverManager.getConnection("jdbc:oracle:thin:@162.38.222.149:1521:iut", "burillec", "09012000");
+            Statement statement;
             this.connection.setAutoCommit(false);
             statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             this.resultSet = statement.executeQuery("SELECT produit.* FROM " + TABLE + " produit ORDER BY "+ NOM_FIELD);
@@ -34,19 +35,31 @@ public class ProduitDAOSQL implements ProduitDAOInterface{
                     "DELETE "+TABLE+" WHERE "+NOM_FIELD+" = ?");
             updateStatement = connection.prepareStatement(
                     "UPDATE "+TABLE+" SET "+QUANTITE_FIELD+" = ? WHERE "+NOM_FIELD+" = ?");
-        } catch (SQLException e) {
-            connection.close();
-            throw e;
+        } catch (Exception e) {
+            if (Objects.nonNull(connection)){
+                try {
+                    connection.close();
+                } catch (SQLException sqlE){
+                    sqlE.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+            System.exit(1);
         }
     }
 
-    public List<I_Produit> getAll() throws SQLException {
-        List<I_Produit> result = new ArrayList<>();
-        resultSet.beforeFirst();
-        while (resultSet.next()){
-            result.add(getProduitFromResultSet());
+    public List<I_Produit> getAll() {
+        try {
+            List<I_Produit> result = new ArrayList<>();
+            resultSet.beforeFirst();
+            while (resultSet.next()) {
+                result.add(getProduitFromResultSet());
+            }
+            return result;
+        }catch (SQLException e){
+            e.printStackTrace();
         }
-        return result;
+        return null;
     }
 
     private Produit getProduitFromResultSet() throws SQLException {

@@ -3,7 +3,6 @@ package stocks.metier.produit;
 import stocks.DAO.ProduitDAOFactory;
 import stocks.DAO.ProduitDAOInterface;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -90,7 +89,7 @@ public class Produit implements I_Produit {
         return quantiteStock * getPrixUnitaireTTC();
     }
 
-    public static List<I_Produit> getAll() throws SQLException, ClassNotFoundException {
+    public static List<I_Produit> getAll(){
         produitDAO = new ProduitDAOFactory().createProduitDAO();
         return produitDAO.getAll();
     }

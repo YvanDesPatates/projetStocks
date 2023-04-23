@@ -5,17 +5,15 @@ import stocks.metier.catalogue.Catalogue;
 import java.util.Objects;
 
 public abstract class ControllerBase {
-
     private static Catalogue catalogue = null;
 
-    public static Catalogue getCatalogue() {
+    public ControllerBase(){
         if (Objects.isNull(catalogue)){
-            try {
-                catalogue = new Catalogue();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            catalogue = new Catalogue();
         }
+    }
+
+    public static Catalogue getCatalogue() {
         return catalogue;
     }
 
