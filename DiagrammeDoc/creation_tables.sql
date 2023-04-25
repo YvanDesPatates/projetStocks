@@ -1,3 +1,12 @@
+CREATE TABLE produits (
+                          idProduit NUMBER,
+                          nomProduit VARCHAR(20),
+                          prixProduitHT NUMBER,
+                          quantiteStockProduit NUMBER,
+                          CONSTRAINT pk_produit PRIMARY KEY (idProduit),
+                          CONSTRAINT uni_nomProduit UNIQUE (nomProduit)
+);
+
 CREATE SEQUENCE produits_sequence
 INCREMENT BY   1;
 
