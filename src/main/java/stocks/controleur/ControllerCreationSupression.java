@@ -1,7 +1,6 @@
 package stocks.controleur;
 
-import stocks.dialog.FenetrePopUp;
-import stocks.exception.VisualisableException;
+import stocks.controleur.exception.VisualisableException;
 
 public class ControllerCreationSupression extends ControllerBase{
 

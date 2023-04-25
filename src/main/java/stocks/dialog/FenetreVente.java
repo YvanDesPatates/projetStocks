@@ -1,7 +1,7 @@
 package stocks.dialog;
 
 import stocks.controleur.ControllerAchatVente;
-import stocks.exception.VisualisableException;
+import stocks.controleur.exception.VisualisableException;
 
 import java.awt.*;
 import java.awt.event.*;

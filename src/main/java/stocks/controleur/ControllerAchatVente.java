@@ -1,6 +1,6 @@
 package stocks.controleur;
 
-import stocks.exception.VisualisableException;
+import stocks.controleur.exception.VisualisableException;
 
 public class ControllerAchatVente extends ControllerBase{
 

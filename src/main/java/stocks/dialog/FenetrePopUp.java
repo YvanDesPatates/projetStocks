@@ -1,6 +1,6 @@
 package stocks.dialog;
 
-import stocks.exception.VisualisableException;
+import stocks.controleur.exception.VisualisableException;
 
 import javax.swing.*;
 import java.awt.*;

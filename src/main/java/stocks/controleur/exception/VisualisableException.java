@@ -1,4 +1,4 @@
-package stocks.exception;
+package stocks.controleur.exception;
 
 public class VisualisableException extends Exception{
     private String title;
