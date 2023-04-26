@@ -30,7 +30,7 @@ public class Produit implements I_Produit {
 
         if ( produitDAO == null){
             try {
-                produitDAO = new ProduitDAOFactory().createProduitDAO();
+                produitDAO = new ProduitDAOFactory().getProduitDAO();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -90,7 +90,7 @@ public class Produit implements I_Produit {
     }
 
     public static List<I_Produit> getAll(){
-        produitDAO = new ProduitDAOFactory().createProduitDAO();
+        produitDAO = new ProduitDAOFactory().getProduitDAO();
         return produitDAO.getAll();
     }
 

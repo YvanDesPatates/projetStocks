@@ -4,7 +4,7 @@ public class ProduitDAOFactory {
 
     private static ProduitDAOInterface produitDAO;
 
-    public ProduitDAOInterface createProduitDAO(){
+    public ProduitDAOInterface getProduitDAO(){
         if (produitDAO == null){
             produitDAO = new ProduitDAOSQL();
         }
