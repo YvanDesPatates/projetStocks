@@ -13,7 +13,7 @@ public abstract class ControllerBase {
         }
     }
 
-    public static Catalogue getCatalogue() {
+    protected Catalogue getCatalogue() {
         return catalogue;
     }
 
