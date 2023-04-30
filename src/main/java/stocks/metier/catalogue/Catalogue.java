@@ -1,5 +1,7 @@
 package stocks.metier.catalogue;
 
+import stocks.DAO.CatalogueDAOInterface;
+import stocks.DAO.DAOFabriqueAbstraite;
 import stocks.metier.produit.I_Produit;
 import stocks.metier.produit.Produit;
 
@@ -10,11 +12,32 @@ import java.util.stream.Collectors;
 
 public class Catalogue implements I_Catalogue{
     private final Map<String, I_Produit> produits;
-
-    public Catalogue(){
-        List<I_Produit> produits = Produit.getAll();
+    private final String nom;
+    public Catalogue(String nom){
+        List<I_Produit> produits = Produit.getAllFromCatalogue(nom);
         //map (key, value) -> key: produit.getNom(), value: produit
         this.produits = new HashMap<>( produits.stream().collect(Collectors.toMap((I_Produit::getNom), Function.identity())) );
+        this.nom = nom;
+    }
+
+    public static Map<String, Integer> getListeEtQuantite() {
+        CatalogueDAOInterface dao = DAOFabriqueAbstraite.getInstance().getCatalogueDAO();
+        return dao.getNomsEtQuantite();
+    }
+
+    public static Catalogue getCatalogueParNom(String nomCatalogue) {
+        CatalogueDAOInterface dao = DAOFabriqueAbstraite.getInstance().getCatalogueDAO();
+        return dao.getParNom(nomCatalogue);
+    }
+
+    public static boolean create(String nom) {
+        CatalogueDAOInterface dao = DAOFabriqueAbstraite.getInstance().getCatalogueDAO();
+        return dao.create(nom);
+    }
+
+    public static boolean supprimerParNom(String nom) {
+        CatalogueDAOInterface dao = DAOFabriqueAbstraite.getInstance().getCatalogueDAO();
+        return dao.supprimer(nom);
     }
 
     @Override
@@ -33,7 +56,7 @@ public class Catalogue implements I_Catalogue{
     @Override
     public boolean addProduit(String nom, double prix, int qte) {
         try {
-            I_Produit produit = new Produit(nom, prix, qte);
+            I_Produit produit = new Produit(nom, prix, qte, this.nom);
             return addProduit(produit);
         } catch (Exception e){
             return false;
@@ -83,6 +106,10 @@ public class Catalogue implements I_Catalogue{
         return produits.keySet().stream().sorted().toList().toArray(new String[0]);
     }
 
+    public String getNom(){
+        return nom;
+    }
+
     @Override
     public double getMontantTotalTTC() {
         DoubleAdder total = new DoubleAdder();
@@ -98,6 +125,7 @@ public class Catalogue implements I_Catalogue{
     @Override
     public String toString(){
         StringBuilder res = new StringBuilder();
+        res.append("\nCatalogue : ").append(nom).append("\n");
         for (I_Produit produit : produits.values()) {
             res.append(produit.toString()).append("\n");
         }

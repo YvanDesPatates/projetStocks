@@ -1,20 +1,19 @@
 package stocks.metier.produit;
 
-import java.sql.SQLException;
-
 public interface I_Produit {
 
-    public abstract boolean ajouter(int qteAchetee);
-    public abstract boolean enlever(int qteVendue);
-    public abstract String getNom();
-    public abstract int getQuantite();
-    public abstract double getPrixUnitaireHT();
-    public abstract double getPrixUnitaireTTC();
-    public abstract double getPrixStockTTC();
+    boolean ajouter(int qteAchetee);
+    boolean enlever(int qteVendue);
+    String getNom();
+    int getQuantite();
+    double getPrixUnitaireHT();
+    double getPrixUnitaireTTC();
+    double getPrixStockTTC();
 
-    public abstract boolean save();
-    public abstract boolean delete();
+    boolean save();
+    boolean delete();
 
-    public abstract String toString();
+    String toString();
 
+    String getNomCatalogue();
 }

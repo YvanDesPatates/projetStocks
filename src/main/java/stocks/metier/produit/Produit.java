@@ -1,6 +1,6 @@
 package stocks.metier.produit;
 
-import stocks.DAO.ProduitDAOFactory;
+import stocks.DAO.DAOFabriqueAbstraite;
 import stocks.DAO.ProduitDAOInterface;
 
 import java.util.List;
@@ -8,14 +8,16 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class Produit implements I_Produit {
-
     private int quantiteStock;
     private final String nom;
     private final double prixUnitaireHT;
+    private final String nomCatalogue;
     private static final double TAUX_TVA = 0.2;
     private static ProduitDAOInterface produitDAO = null;
 
-    public Produit(String nom, double prixUnitaireHT, int quantiteStock){
+    public Produit(String nom, double prixUnitaireHT, int quantiteStock, String nomCatalogue){
+        this.nomCatalogue = nomCatalogue;
+
         if (Objects.isNull(nom)){
             throw new NullPointerException("Une des valeurs est null");
         }
@@ -30,7 +32,7 @@ public class Produit implements I_Produit {
 
         if ( produitDAO == null){
             try {
-                produitDAO = new ProduitDAOFactory().createProduitDAO();
+                produitDAO = DAOFabriqueAbstraite.getInstance().getProduitDAO();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -89,9 +91,11 @@ public class Produit implements I_Produit {
         return quantiteStock * getPrixUnitaireTTC();
     }
 
-    public static List<I_Produit> getAll(){
-        produitDAO = new ProduitDAOFactory().createProduitDAO();
-        return produitDAO.getAll();
+    public String getNomCatalogue() { return nomCatalogue; }
+
+    public static List<I_Produit> getAllFromCatalogue(String nomCatalogue){
+        produitDAO = DAOFabriqueAbstraite.getInstance().getProduitDAO();
+        return produitDAO.getAllFromCatalogue(nomCatalogue);
     }
 
     public boolean save() {
