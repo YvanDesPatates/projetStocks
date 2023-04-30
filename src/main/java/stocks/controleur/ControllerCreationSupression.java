@@ -1,9 +1,13 @@
 package stocks.controleur;
 
-import stocks.dialog.FenetrePopUp;
 import stocks.exception.VisualisableException;
+import stocks.metier.catalogue.Catalogue;
 
-public class ControllerCreationSupression extends ControllerBase{
+public class ControllerCreationSupression extends ControllerProduit {
+
+    public ControllerCreationSupression(Catalogue catalogue) {
+        super(catalogue);
+    }
 
     public boolean creationProduit(String nomProduit, String prixHT, String qteStock) throws VisualisableException {
         double prix;
