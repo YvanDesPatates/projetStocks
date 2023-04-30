@@ -9,32 +9,35 @@ import java.util.List;
 import java.util.Objects;
 
 public class ProduitDAOSQL implements ProduitDAOInterface{
-    private ResultSet resultSet;
-    private Connection connection;
+    private final Connection connection;
     private PreparedStatement createStatement;
     private PreparedStatement deleteStatement;
     private PreparedStatement updateStatement;
+    private PreparedStatement allByCatalogueIDSt;
+    private PreparedStatement getIdCatalogueByName;
 
-    private static final String TABLE = "Produits";
-    private static final String NOM_FIELD = "nomProduit";
+    protected static final String TABLE = "Produits";
+    protected static final String ID_CATALOGUE = "idCatalogue";
+    protected static final String NOM_FIELD = "nomProduit";
     private static final String PRIX_FIELD = "prixProduitHT";
     private static final String QUANTITE_FIELD = "quantiteStockProduit";
     private static final String procedureCreation = "createProduit";
 
-    protected ProduitDAOSQL() {
+    protected ProduitDAOSQL(Connection connection) {
+        this.connection = connection;
         try {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-            this.connection = DriverManager.getConnection("jdbc:oracle:thin:@162.38.222.149:1521:iut", "burillec", "09012000");
-            Statement statement;
-            this.connection.setAutoCommit(false);
-            statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            this.resultSet = statement.executeQuery("SELECT produit.* FROM " + TABLE + " produit ORDER BY "+ NOM_FIELD);
             createStatement = connection.prepareStatement(
-                    "CALL "+procedureCreation+"(?, ?, ?)");
+                    "CALL "+procedureCreation+"(?, ?, ?, ?)");
             deleteStatement = connection.prepareStatement(
-                    "DELETE "+TABLE+" WHERE "+NOM_FIELD+" = ?");
+                    "DELETE "+TABLE+" WHERE "+NOM_FIELD+" = ? AND "+ID_CATALOGUE+" = ?");
             updateStatement = connection.prepareStatement(
-                    "UPDATE "+TABLE+" SET "+QUANTITE_FIELD+" = ? WHERE "+NOM_FIELD+" = ?");
+                    "UPDATE "+TABLE+" SET "+QUANTITE_FIELD+" = ? WHERE "+NOM_FIELD+" = ? AND "+ID_CATALOGUE+" = ?");
+            allByCatalogueIDSt = connection.prepareStatement(
+                    "SELECT * FROM "+TABLE+" WHERE "+ID_CATALOGUE+" = ? ORDER BY "+NOM_FIELD);
+            getIdCatalogueByName = connection.prepareStatement(
+                    "SELECT "+CatalogueDAOSQL.ID_FIELD+" AS "+ID_CATALOGUE+
+                            " FROM "+CatalogueDAOSQL.TABLE+
+                            " Where "+CatalogueDAOSQL.NOM_FIELD+" = ?");
         } catch (Exception e) {
             if (Objects.nonNull(connection)){
                 try {
@@ -48,12 +51,21 @@ public class ProduitDAOSQL implements ProduitDAOInterface{
         }
     }
 
-    public List<I_Produit> getAll() {
+    private int getIdCatalogueParNom(String nomCatalogue) throws SQLException {
+        getIdCatalogueByName.setString(1, nomCatalogue);
+        ResultSet rs = getIdCatalogueByName.executeQuery();
+        rs.next();
+        return rs.getInt(ID_CATALOGUE);
+    }
+
+    public  List<I_Produit> getAllFromCatalogue(String nomCatalogue){
         try {
+            int idCatalogue = getIdCatalogueParNom(nomCatalogue);
+            allByCatalogueIDSt.setInt(1, idCatalogue);
+            ResultSet resultS = allByCatalogueIDSt.executeQuery();
             List<I_Produit> result = new ArrayList<>();
-            resultSet.beforeFirst();
-            while (resultSet.next()) {
-                result.add(getProduitFromResultSet());
+            while (resultS.next()) {
+                result.add(getProduitFromResultSet(resultS, nomCatalogue));
             }
             return result;
         }catch (SQLException e){
@@ -62,18 +74,20 @@ public class ProduitDAOSQL implements ProduitDAOInterface{
         return null;
     }
 
-    private Produit getProduitFromResultSet() throws SQLException {
-        String nom = resultSet.getString(NOM_FIELD);
-        double prix = resultSet.getDouble(PRIX_FIELD);
-        int quantite = resultSet.getInt(QUANTITE_FIELD);
-        return new Produit(nom, prix, quantite);
+    private Produit getProduitFromResultSet(ResultSet resultS, String nomCataloge) throws SQLException {
+        String nom = resultS.getString(NOM_FIELD);
+        double prix = resultS.getDouble(PRIX_FIELD);
+        int quantite = resultS.getInt(QUANTITE_FIELD);
+        return new Produit(nom, prix, quantite, nomCataloge);
     }
 
     public boolean create(I_Produit produit) {
         try {
+            int idCatalogue = getIdCatalogueParNom(produit.getNomCatalogue());
             createStatement.setString(1, produit.getNom());
             createStatement.setDouble(2, produit.getPrixUnitaireHT());
             createStatement.setInt(3, produit.getQuantite());
+            createStatement.setInt(4, idCatalogue);
             createStatement.execute();
             connection.commit();
             return true;
@@ -85,7 +99,9 @@ public class ProduitDAOSQL implements ProduitDAOInterface{
 
     public boolean delete(I_Produit produit) {
         try {
+            int idCatalogue = getIdCatalogueParNom(produit.getNomCatalogue());
             deleteStatement.setString(1, produit.getNom());
+            deleteStatement.setInt(2, idCatalogue);
             deleteStatement.execute();
             connection.commit();
             return true;
@@ -97,8 +113,10 @@ public class ProduitDAOSQL implements ProduitDAOInterface{
 
     public boolean update(I_Produit produit){
         try {
+            int idCatalogue = getIdCatalogueParNom(produit.getNomCatalogue());
             updateStatement.setDouble(1, produit.getQuantite());
             updateStatement.setString(2, produit.getNom());
+            updateStatement.setInt(3, idCatalogue);
             updateStatement.execute();
             connection.commit();
             return true;
@@ -107,5 +125,4 @@ public class ProduitDAOSQL implements ProduitDAOInterface{
         }
         return false;
     }
-
 }

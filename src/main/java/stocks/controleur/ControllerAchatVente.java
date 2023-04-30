@@ -1,8 +1,9 @@
 package stocks.controleur;
 
-import stocks.controleur.exception.VisualisableException;
+import stocks.exception.VisualisableException;
+import stocks.metier.catalogue.Catalogue;
 
-public class ControllerAchatVente extends ControllerBase{
+public class ControllerAchatVente extends ControllerProduit {
 
     public boolean achatProduit(String nomProduit, String qte) throws VisualisableException {
         int quantite;

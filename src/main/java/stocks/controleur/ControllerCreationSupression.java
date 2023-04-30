@@ -1,8 +1,9 @@
 package stocks.controleur;
 
-import stocks.controleur.exception.VisualisableException;
+import stocks.exception.VisualisableException;
+import stocks.metier.catalogue.Catalogue;
 
-public class ControllerCreationSupression extends ControllerBase{
+public class ControllerCreationSupression extends ControllerProduit {
 
     public boolean creationProduit(String nomProduit, String prixHT, String qteStock) throws VisualisableException {
         double prix;

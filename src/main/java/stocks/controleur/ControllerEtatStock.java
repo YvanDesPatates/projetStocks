@@ -1,6 +1,8 @@
 package stocks.controleur;
 
-public class ControllerEtatStock extends ControllerBase{
+import stocks.metier.catalogue.Catalogue;
+
+public class ControllerEtatStock extends ControllerProduit {
 
     public String getEtatStock(){
         return getCatalogue().toString();
