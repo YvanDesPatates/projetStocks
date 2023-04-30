@@ -5,7 +5,7 @@ CREATE TABLE Catalogues (
                           id NUMBER,
                           nom VARCHAR(20),
                           CONSTRAINT pk_catalogue PRIMARY KEY (id),
-                          CONSTRAINT uni_nomProduit UNIQUE (nom)
+                          CONSTRAINT uni_nomCatalogue UNIQUE (nom)
 );
 
 CREATE TABLE Produits (
@@ -15,14 +15,14 @@ CREATE TABLE Produits (
                           quantiteStockProduit NUMBER,
                           idCatalogue NUMBER,
                           CONSTRAINT pk_produit PRIMARY KEY (idProduit),
-                          CONSTRAINT fk_catalogue FOREIGN KEY (idCatalogue) REFERENCES Catalogues(id)
+                          CONSTRAINT fk_catalogue FOREIGN KEY (idCatalogue) REFERENCES Catalogues(id) ON DELETE CASCADE
 );
 
 
-CREATE OR REPLACE SEQUENCE produits_sequence
+CREATE SEQUENCE produits_sequence
 START WITH 1 INCREMENT BY 1;
 
-CREATE OR REPLACE SEQUENCE catalogues_sequence
+CREATE SEQUENCE catalogues_sequence
 START WITH 1 INCREMENT BY 1;
 
 CREATE OR REPLACE PROCEDURE createProduit
