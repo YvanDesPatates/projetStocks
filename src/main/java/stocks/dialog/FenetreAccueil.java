@@ -129,10 +129,9 @@ public class FenetreAccueil extends JFrame implements ActionListener, WindowList
         if (e.getSource() == btSelectionner)
         {
             String texteSelection = (String)cmbSelectionner.getSelectedItem();
-            if (texteSelection != null)
+            if (texteSelection != null && controllerCatalogues.validerChoixCatalogue(texteSelection))
             {
-                Catalogue catalogue = controllerCatalogues.validerChoixCatalogue(texteSelection);
-                new FenetrePrincipale(catalogue);
+                new FenetrePrincipale();
                 this.dispose();
             }
         }

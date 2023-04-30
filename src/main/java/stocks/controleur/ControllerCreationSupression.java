@@ -5,10 +5,6 @@ import stocks.metier.catalogue.Catalogue;
 
 public class ControllerCreationSupression extends ControllerProduit {
 
-    public ControllerCreationSupression(Catalogue catalogue) {
-        super(catalogue);
-    }
-
     public boolean creationProduit(String nomProduit, String prixHT, String qteStock) throws VisualisableException {
         double prix;
         int qte;

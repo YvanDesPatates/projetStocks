@@ -7,7 +7,7 @@ import java.util.Objects;
 public abstract class ControllerProduit {
     private static Catalogue catalogue;
 
-    public ControllerProduit(Catalogue catalogue){
+    public static void setCatalogueSiPasDejaFait(Catalogue catalogue){
         if (Objects.isNull(ControllerProduit.catalogue)){
             ControllerProduit.catalogue = catalogue;
         }

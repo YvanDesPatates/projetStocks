@@ -3,7 +3,6 @@ package stocks.dialog;
 import stocks.controleur.ControllerAchatVente;
 import stocks.controleur.ControllerCreationSupression;
 import stocks.controleur.ControllerEtatStock;
-import stocks.metier.catalogue.Catalogue;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +30,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 	private ControllerCreationSupression controllerCreationSupression;
 
 
-	public FenetrePrincipale(Catalogue catalogue) {
+	public FenetrePrincipale() {
 		
 		setTitle("exercice Produits");
 		setBounds(500, 250, 320, 250);
@@ -77,9 +76,9 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 		addWindowListener(this);
 		setVisible(true);
 
-		controllerEtatStock = new ControllerEtatStock(catalogue);
-		controllerAchatVente = new ControllerAchatVente(catalogue);
-		controllerCreationSupression = new ControllerCreationSupression(catalogue);
+		controllerEtatStock = new ControllerEtatStock();
+		controllerAchatVente = new ControllerAchatVente();
+		controllerCreationSupression = new ControllerCreationSupression();
 	}
 
 	public void actionPerformed(ActionEvent e) {

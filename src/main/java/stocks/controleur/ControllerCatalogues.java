@@ -3,10 +3,7 @@ package stocks.controleur;
 import stocks.exception.VisualisableException;
 import stocks.metier.catalogue.Catalogue;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class ControllerCatalogues {
     private final Map<String, Integer> cataloguesEtQuantites;
@@ -15,8 +12,13 @@ public class ControllerCatalogues {
         cataloguesEtQuantites = new TreeMap<>(Catalogue.getListeEtQuantite());
     }
 
-    public Catalogue validerChoixCatalogue(String nomCatalogue){
-        return Catalogue.getCatalogueParNom(nomCatalogue);
+    public boolean validerChoixCatalogue(String nomCatalogue){
+        Catalogue catalogue = Catalogue.getCatalogueParNom(nomCatalogue);
+        if (Objects.nonNull( catalogue )){
+            ControllerProduit.setCatalogueSiPasDejaFait(catalogue);
+            return true;
+        }
+        return false;
     }
 
     public String[] getNomsCatalogues(){
