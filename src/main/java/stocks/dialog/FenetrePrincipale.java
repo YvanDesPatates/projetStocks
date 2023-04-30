@@ -3,10 +3,14 @@ package stocks.dialog;
 import stocks.controleur.ControllerAchatVente;
 import stocks.controleur.ControllerCreationSupression;
 import stocks.controleur.ControllerEtatStock;
+import stocks.metier.catalogue.Catalogue;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 
 
@@ -27,7 +31,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 	private ControllerCreationSupression controllerCreationSupression;
 
 
-	public FenetrePrincipale() {
+	public FenetrePrincipale(Catalogue catalogue) {
 		
 		setTitle("exercice Produits");
 		setBounds(500, 250, 320, 250);
@@ -73,9 +77,9 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 		addWindowListener(this);
 		setVisible(true);
 
-		controllerEtatStock = new ControllerEtatStock();
-		controllerAchatVente = new ControllerAchatVente();
-		controllerCreationSupression = new ControllerCreationSupression();
+		controllerEtatStock = new ControllerEtatStock(catalogue);
+		controllerAchatVente = new ControllerAchatVente(catalogue);
+		controllerCreationSupression = new ControllerCreationSupression(catalogue);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -118,11 +122,5 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 	public void windowDeiconified(WindowEvent arg0) {}
 	public void windowIconified(WindowEvent arg0) {}
 	public void windowOpened(WindowEvent arg0) {}
-
-	
-	
-	public static void main(String[] args) {
-		new FenetrePrincipale();
-	}
 
 }

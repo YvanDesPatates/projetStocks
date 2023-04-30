@@ -59,7 +59,7 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 				if (controller.creationProduit(txtNom.getText(), txtPrixHT.getText(), txtQte.getText())) {
 					new FenetrePopUp("création validée", "le produit " + txtNom.getText() + " à bien été ajouté au catalogue");
 				} else {
-					new FenetrePopUp("Erreur création produit", " Erreur lors de la création du produit\n vérifiez qu'aucun produit ne porte pas déjà le même nom !");
+					new FenetrePopUp("Erreur création produit", " Erreur lors de la création du produit\n vérifiez qu'aucun produit ne porte pas déjà le même nom\n ou que le nom de votre produit ne soit pas trop long !");
 				}
 			} catch (VisualisableException ex){
 				new FenetrePopUp(ex);
