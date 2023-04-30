@@ -1,7 +1,6 @@
 package stocks.controleur;
 
-import stocks.exception.VisualisableException;
-import stocks.metier.catalogue.Catalogue;
+import stocks.controleur.exception.VisualisableException;
 
 public class ControllerCreationSupression extends ControllerProduit {
 

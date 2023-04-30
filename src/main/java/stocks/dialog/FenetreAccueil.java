@@ -1,8 +1,7 @@
 package stocks.dialog;
 
 import stocks.controleur.ControllerCatalogues;
-import stocks.exception.VisualisableException;
-import stocks.metier.catalogue.Catalogue;
+import stocks.controleur.exception.VisualisableException;
 
 import javax.swing.*;
 import java.awt.*;
